@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Letter from "../../components/letter/letter";
+import LetterRow from "../../components/letterRow/letterRow";
 import classes from "./game.module.css";
 
 function Game() {
@@ -9,14 +9,17 @@ function Game() {
   const [attemptCount, setAttemptCount] = useState(0);
   const [numLetters, setNumberLetters] = useState(5);
 
-  let letters = [];
-  for (let i = 0; i < word.length; i++) {
-    letters.push(<Letter letter={word[i]} wrongPlace />);
+  let letterRows = [];
+  for (let i = 0; i < maxAttempts; i++) {
+    letterRows.push(<LetterRow letters={word} />)
   }
   return (
-    <div>
+    <div className={classes.game}>
       <p>Game</p>
-      {letters}
+      <div className={classes.letterArea}>
+        {letterRows}
+      </div>
+      <div className={classes.keyArea}></div>
     </div>
   );
 }

@@ -7,7 +7,6 @@ import reportWebVitals from "./reportWebVitals";
 ReactDOM.render(
   <React.StrictMode>
     <WurdBird />
-    {/* <p>Hello</p> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

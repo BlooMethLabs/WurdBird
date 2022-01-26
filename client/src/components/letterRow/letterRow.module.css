@@ -1,0 +1,4 @@
+.letterRow {
+  display: flex;
+  flex-direction: row;
+}

@@ -1,0 +1,16 @@
+.game {
+	width: 500px;
+  height: 100%;
+  background-color: grey;
+  margin: auto;
+}
+
+.letterArea {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.keyArea {
+  height: 30%;
+}
