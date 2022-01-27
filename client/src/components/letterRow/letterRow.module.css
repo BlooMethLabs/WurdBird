@@ -1,4 +1,5 @@
 .letterRow {
   display: flex;
   flex-direction: row;
+  margin: auto;
 }

@@ -2,7 +2,6 @@ import React from "react";
 import classes from "./letter.module.css";
 
 function Letter(props) {
-  console.log(props.letter);
   let classList = [];
   classList.push(classes.letterBox);
   if (props.wrongPlace) {
