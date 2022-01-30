@@ -5,39 +5,44 @@ import classes from "./game.module.css";
 
 function Game() {
   const [word, setWord] = useState("MANDY");
+  const [success, setSuccess] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
   const [maxAttempts, setMaxAttempts] = useState(6);
   const [attemptCount, setAttemptCount] = useState(0);
   const [letterRows, setLetterRows] = useState([]);
   const [currentLetterRow, setCurrentLetterRow] = useState([]);
 
   let addLetter = (l) => {
-    if (attemptCount < maxAttempts && currentLetterRow.length < word.length) {
+    if (!gameOver && currentLetterRow.length < word.length) {
       let newCurrentLetterRow = [...currentLetterRow, l];
       setCurrentLetterRow(newCurrentLetterRow);
     }
   };
 
   let deleteLetter = () => {
-    if (attemptCount < maxAttempts && currentLetterRow.length > 0) {
+    if (!gameOver && currentLetterRow.length > 0) {
       let newCurrentLetterRow = [...currentLetterRow.slice(0, -1)];
       setCurrentLetterRow(newCurrentLetterRow);
     }
   };
 
   let guessWord = () => {
-    if (
-      attemptCount < maxAttempts &&
-      currentLetterRow.length === word.length &&
-      attemptCount < maxAttempts
-    ) {
+    if (!gameOver && currentLetterRow.length === word.length) {
       let newLetterRows = [...letterRows, currentLetterRow];
       setLetterRows(newLetterRows);
       let newAttemptCount = attemptCount + 1;
       setAttemptCount(newAttemptCount);
-      console.log(attemptCount);
-      newAttemptCount === maxAttempts
-        ? setCurrentLetterRow(null)
-        : setCurrentLetterRow([]);
+      if (currentLetterRow.join("") === word) {
+        setSuccess(true);
+        setGameOver(true);
+        alert(`Solved in ${newAttemptCount} attempts!`);
+        return;
+      }
+      if (newAttemptCount === maxAttempts) {
+        setGameOver(true);
+        alert(`Failed to find word.`);
+      }
+      setCurrentLetterRow([]);
     }
   };
 
@@ -45,7 +50,7 @@ function Game() {
   for (let i = 0; i < letterRows.length; i++) {
     letterRowsToDisplay.push(<LetterRow letters={letterRows[i]} word={word} />);
   }
-  if (currentLetterRow) {
+  if (!gameOver) {
     letterRowsToDisplay.push(
       <LetterRow letters={currentLetterRow} word={word} current />
     );
