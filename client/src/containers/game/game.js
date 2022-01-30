@@ -11,43 +11,43 @@ function Game() {
   const [currentLetterRow, setCurrentLetterRow] = useState([]);
 
   let addLetter = (l) => {
-    if (currentLetterRow.length < word.length) {
+    if (attemptCount < maxAttempts && currentLetterRow.length < word.length) {
       let newCurrentLetterRow = [...currentLetterRow, l];
       setCurrentLetterRow(newCurrentLetterRow);
-      let newLetterRows = [...letterRows.slice(0, -1), newCurrentLetterRow];
-      setLetterRows(newLetterRows);
     }
   };
 
   let deleteLetter = () => {
-    if (currentLetterRow.length > 0) {
-      let newCurrentLetterRow = currentLetterRow.slice(0, -1);
+    if (attemptCount < maxAttempts && currentLetterRow.length > 0) {
+      let newCurrentLetterRow = [...currentLetterRow.slice(0, -1)];
       setCurrentLetterRow(newCurrentLetterRow);
-      let newLetterRows = [...letterRows.slice(0, -1), newCurrentLetterRow];
-      setLetterRows(newLetterRows);
     }
   };
 
-  let guessWord = (w) => {
+  let guessWord = () => {
     if (
-      currentLetterRow.length == word.length &&
-      attemptCount < maxAttempts - 1
+      attemptCount < maxAttempts &&
+      currentLetterRow.length === word.length &&
+      attemptCount < maxAttempts
     ) {
-      setCurrentLetterRow("");
-      let newLetterRows = [...letterRows, ""];
+      let newLetterRows = [...letterRows, currentLetterRow];
       setLetterRows(newLetterRows);
       let newAttemptCount = attemptCount + 1;
       setAttemptCount(newAttemptCount);
+      console.log(attemptCount);
+      newAttemptCount === maxAttempts
+        ? setCurrentLetterRow(null)
+        : setCurrentLetterRow([]);
     }
   };
 
   let letterRowsToDisplay = [];
   for (let i = 0; i < letterRows.length; i++) {
+    letterRowsToDisplay.push(<LetterRow letters={letterRows[i]} word={word} />);
+  }
+  if (currentLetterRow) {
     letterRowsToDisplay.push(
-      <LetterRow
-        letters={letterRows[i]}
-        word={i == letterRows.length - 1 ? null : word}
-      />
+      <LetterRow letters={currentLetterRow} word={word} current />
     );
   }
 

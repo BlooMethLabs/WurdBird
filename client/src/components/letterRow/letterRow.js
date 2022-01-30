@@ -3,10 +3,9 @@ import Letter from "../letter/letter";
 import classes from "./letterRow.module.css";
 
 function LetterRow(props) {
-  let letters = [];
   let wordLetterCount = {};
   let letterStatuses = [];
-  if (props.word) {
+  if (!props.current) {
     // Get the total number of each letter in the word
     for (let i = 0; i < props.word.length; i++) {
       let letter = props.word[i];
@@ -41,6 +40,7 @@ function LetterRow(props) {
     }
   }
 
+  let letters = [];
   for (let i = 0; i < props.letters.length; i++) {
     let letter = props.letters[i];
     letters.push(
@@ -51,6 +51,10 @@ function LetterRow(props) {
       />
     );
   }
+  for (let i = props.letters.length; i < props.word.length; i++) {
+    letters.push(<Letter letter="" />);
+  }
+
   return <div className={classes.letterRow}>{letters}</div>;
 }
 
