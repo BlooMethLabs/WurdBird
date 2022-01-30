@@ -4,7 +4,7 @@ import Keyboard from "../../components/keyboard/keyboard";
 import classes from "./game.module.css";
 
 function Game() {
-  const [word, setWord] = useState("mandy");
+  const [word, setWord] = useState("MANDY");
   const [maxAttempts, setMaxAttempts] = useState(6);
   const [attemptCount, setAttemptCount] = useState(0);
   const [letterRows, setLetterRows] = useState([]);
