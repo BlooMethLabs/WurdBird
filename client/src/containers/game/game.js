@@ -41,24 +41,38 @@ function Game() {
     }
   };
 
-  let guessWord = () => {
-    if (!gameOver && currentLetterRow.length === word.length) {
-      let newLetterRows = [...letterRows, currentLetterRow];
-      setLetterRows(newLetterRows);
-      let newAttemptCount = attemptCount + 1;
-      setAttemptCount(newAttemptCount);
-      if (currentLetterRow.join("") === word) {
-        setSuccess(true);
-        setGameOver(true);
-        alert(`Solved in ${newAttemptCount} attempts!`);
+  let guessWord = async () => {
+    if (gameOver || currentLetterRow.length !== word.length) {
+      return;
+    }
+    try {
+      let req = { word: currentLetterRow.join('') };
+      const res = await axios.get("/api/checkValidWord?" + new URLSearchParams(req));
+      console.log(res);
+      if (!res.data) {
+        alert('Not a valid word!');
         return;
       }
-      if (newAttemptCount === maxAttempts) {
-        setGameOver(true);
-        alert(`Failed to find word.`);
-      }
-      setCurrentLetterRow([]);
+    } catch(err) {
+      console.log(err);
+      alert('Failed to check if word valid.');
+      return;
     }
+    let newLetterRows = [...letterRows, currentLetterRow];
+    setLetterRows(newLetterRows);
+    let newAttemptCount = attemptCount + 1;
+    setAttemptCount(newAttemptCount);
+    if (currentLetterRow.join("") === word) {
+      setSuccess(true);
+      setGameOver(true);
+      alert(`Solved in ${newAttemptCount} attempts!`);
+      return;
+    }
+    if (newAttemptCount === maxAttempts) {
+      setGameOver(true);
+      alert(`Failed to find word.`);
+    }
+    setCurrentLetterRow([]);
   };
 
   let letterRowsToDisplay = [];

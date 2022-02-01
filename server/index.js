@@ -16,6 +16,15 @@ app.get("/api/getRandomWord", function (req, res) {
   res.send(allowedWords[randomNumber]);
 });
 
+app.get("/api/checkValidWord", function (req, res) {
+  console.log(req.query.word);
+  let valid = allowedWords.includes(req.query.word.toLowerCase());
+  if(!valid) {
+    valid = allowedGuesses.includes(req.query.word.toLowerCase());
+  }
+  res.send(valid);
+});
+
 app.listen(3001, function () {
   console.log("Listening on port 3001");
 });
