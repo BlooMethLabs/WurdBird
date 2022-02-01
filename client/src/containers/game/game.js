@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LetterRow from "../../components/letterRow/letterRow";
 import Keyboard from "../../components/keyboard/keyboard";
 import classes from "./game.module.css";
+
+import axios from 'axios';
 
 function Game() {
   const [word, setWord] = useState("MANDY");
@@ -11,6 +13,19 @@ function Game() {
   const [attemptCount, setAttemptCount] = useState(0);
   const [letterRows, setLetterRows] = useState([]);
   const [currentLetterRow, setCurrentLetterRow] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/getRandomWord")
+      .then((res) => {
+        console.log(res);
+        setWord(res.data.toUpperCase());
+      })
+      .catch((err) => {
+        // TODO error handling
+        console.log(err);
+      });
+  }, []);
 
   let addLetter = (l) => {
     if (!gameOver && currentLetterRow.length < word.length) {

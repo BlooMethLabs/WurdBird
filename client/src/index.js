@@ -3,6 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import WurdBird from "./WurdBird";
 import reportWebVitals from "./reportWebVitals";
+import axios from 'axios';
+
+// Use NIC's IP address when testing over network
+axios.defaults.baseURL = 'http://localhost:3001/';
 
 ReactDOM.render(
   <React.StrictMode>
