@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import axios from 'axios';
 
 // Use NIC's IP address when testing over network
-axios.defaults.baseURL = 'http://localhost:3001/';
+axios.defaults.baseURL = 'http://localhost:5000/';
 
 ReactDOM.render(
   <React.StrictMode>
