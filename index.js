@@ -10,7 +10,7 @@ const allowedGuesses = fs.readFileSync('./wordle-allowed-guesses.txt').toString(
 app.use(cors());
 
 app.get("/api/getRandomWord", function (req, res) {
-  console.log(req.query.length);
+  // console.log(req.query.length);
   let randomNumber = Math.floor(Math.random() * allowedWords.length);
   console.log(allowedWords[randomNumber]);
   res.send(allowedWords[randomNumber]);
@@ -25,6 +25,12 @@ app.get("/api/checkValidWord", function (req, res) {
   res.send(valid);
 });
 
-app.listen(3001, function () {
-  console.log("Listening on port 3001");
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, function () {
+  console.log(`Listening on port ${port}`);
 });
