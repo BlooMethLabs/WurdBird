@@ -6,7 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import axios from 'axios';
 
 // Use NIC's IP address when testing over network
-axios.defaults.baseURL = 'http://localhost:5000/';
+// axios.defaults.baseURL = 'http://localhost:5000/';
+axios.defaults.baseURL = 'https://powerful-basin-89610.herokuapp.com';
 
 ReactDOM.render(
   <React.StrictMode>
