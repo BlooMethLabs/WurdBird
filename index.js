@@ -1,5 +1,6 @@
 //jshint esversion:6
 const express = require("express");
+const path = require('path');
 const app = express();
 const cors = require('cors');
 const fs = require('fs');
@@ -8,6 +9,7 @@ const allowedWords = fs.readFileSync('./wordle-answers-alphabetical.txt').toStri
 const allowedGuesses = fs.readFileSync('./wordle-allowed-guesses.txt').toString('utf-8').split('\n');
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get("/api/getRandomWord", function (req, res) {
   // console.log(req.query.length);
@@ -25,9 +27,11 @@ app.get("/api/checkValidWord", function (req, res) {
   res.send(valid);
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   console.log(path.join(__dirname+'/client/build/index.html'));
+//   // res.sendFile(__dirname+'/client/build/index.html');
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
 
 const port = process.env.PORT || 5000;
 
