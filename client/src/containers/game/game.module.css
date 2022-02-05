@@ -1,4 +1,6 @@
 .game {
+  position: absolute;
+  width: 100%;
   max-width: 500px;
   height: 100%;
   background-color: grey;
@@ -13,4 +15,6 @@
 
 .keyboard {
   height: 30%;
+  display: flex;
+  flex-direction: column;
 }

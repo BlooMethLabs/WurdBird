@@ -1,0 +1,30 @@
+.keyRow {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+}
+
+.key {
+  min-width: 30px;
+  margin: 2px;
+  border: 1px;
+  background-color: lightgray;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.wrongPosition {
+  background-color: rgba(167, 167, 44, 0.671);
+}
+
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: black;
+}
+
+.incorrect p {
+  color: white;
+}

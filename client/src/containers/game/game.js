@@ -3,7 +3,7 @@ import LetterRow from "../../components/letterRow/letterRow";
 import Keyboard from "../../components/keyboard/keyboard";
 import classes from "./game.module.css";
 
-import axios from 'axios';
+import axios from "axios";
 
 function Game() {
   const [word, setWord] = useState("MANDY");
@@ -13,6 +13,9 @@ function Game() {
   const [attemptCount, setAttemptCount] = useState(0);
   const [letterRows, setLetterRows] = useState([]);
   const [currentLetterRow, setCurrentLetterRow] = useState([]);
+  const [incorrectKeys, setIncorrectKeys] = useState([]);
+  const [correctKeys, setCorrectKeys] = useState([]);
+  const [wrongPositionKeys, setWrongPositionKeys] = useState([]);
 
   useEffect(() => {
     axios
@@ -46,16 +49,18 @@ function Game() {
       return;
     }
     try {
-      let req = { word: currentLetterRow.join('') };
-      const res = await axios.get("/api/checkValidWord?" + new URLSearchParams(req));
+      let req = { word: currentLetterRow.join("") };
+      const res = await axios.get(
+        "/api/checkValidWord?" + new URLSearchParams(req)
+      );
       console.log(res);
       if (!res.data) {
-        alert('Not a valid word!');
+        alert("Not a valid word!");
         return;
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
-      alert('Failed to check if word valid.');
+      alert("Failed to check if word valid.");
       return;
     }
     let newLetterRows = [...letterRows, currentLetterRow];
@@ -72,7 +77,30 @@ function Game() {
       setGameOver(true);
       alert(`Failed to find word.`);
     }
+    updateKeys();
     setCurrentLetterRow([]);
+  };
+
+  let updateKeys = () => {
+    let newCorrectKeys = [...correctKeys];
+    let newIncorrectKeys = [...incorrectKeys];
+    let newWrongPositionKeys = [...wrongPositionKeys];
+    for (let i = 0; i < currentLetterRow.length; i++) {
+      let letter = currentLetterRow[i];
+      if (newCorrectKeys.includes(letter)) {
+        continue;
+      }
+      if (letter === word[i]) {
+        newCorrectKeys.push(letter);
+      } else if (word.includes(letter)) {
+        newWrongPositionKeys.push(letter);
+      } else {
+        newIncorrectKeys.push(letter);
+      }
+    }
+    setCorrectKeys(newCorrectKeys);
+    setIncorrectKeys(newIncorrectKeys);
+    setWrongPositionKeys(newWrongPositionKeys);
   };
 
   let letterRowsToDisplay = [];
@@ -84,16 +112,21 @@ function Game() {
       <LetterRow letters={currentLetterRow} word={word} current />
     );
   }
+  for (let i = letterRowsToDisplay.length; i < maxAttempts; i++) {
+    letterRowsToDisplay.push(<LetterRow letters={[]} word={word} />);
+  }
 
   return (
     <div className={classes.game}>
-      <p>Game</p>
       <div className={classes.letterArea}>{letterRowsToDisplay}</div>
       <div className={classes.keyboard}>
         <Keyboard
           onClickKey={addLetter}
           onClickDelete={deleteLetter}
           onClickEnter={guessWord}
+          correctKeys={correctKeys}
+          incorrectKeys={incorrectKeys}
+          wrongPositionKeys={wrongPositionKeys}
         />
       </div>
     </div>
